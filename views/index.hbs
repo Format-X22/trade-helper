@@ -1,0 +1,43 @@
+<html lang='en'>
+    <head>
+        <title>Main</title>
+        <meta charset='UTF-8' />
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    </head>
+    <body>
+        <nav class='navbar navbar-expand-lg navbar-dark bg-primary'>
+            <div class='container'>
+                <a class='navbar-brand' href='/'>Control</a>
+                <button
+                    class='navbar-toggler'
+                    type='button'
+                    data-bs-toggle='collapse'
+                    data-bs-target='#navbar'
+                    aria-controls='navbar'
+                    aria-expanded='false'
+                    aria-label='Toggle navigation'
+                >
+                    <span class='navbar-toggler-icon'></span>
+                </button>
+                <div class='collapse navbar-collapse' id='navbar'>
+                    <ul class='navbar-nav me-auto mb-2 mb-lg-0'>
+                        <li class='nav-item'>
+                            <a class='nav-link{{#if isStatusPage }} active{{/if}}' aria-current='page' href='/'>Status</a>
+                        </li>
+                        <li class='nav-item'>
+                            <a class='nav-link{{#if isLogsPage }} active{{/if}}' aria-current='page' href='/logs'>Logs</a>
+                        </li>
+                        <li class='nav-item'>
+                            <a class='nav-link{{#if isAddTaskPage }} active{{/if}}' aria-current='page' href='/add-task'>Add task</a>
+                        </li>
+                        <li class='nav-item'>
+                            <a class='nav-link{{#if isShutdownPage }} active{{/if}}' aria-current='page' href='/shutdown'>Shutdown</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        {{{body}}}
+        <script src='./js/bootstrap.bundle.js'></script>
+    </body>
+</html>
