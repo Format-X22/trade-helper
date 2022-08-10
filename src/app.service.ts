@@ -42,7 +42,7 @@ export class AppService {
     async getLogs(): Promise<TLogs> {
         const length = this.logs.length;
 
-        return this.logs.slice(length - 500, length).reverse();
+        return this.logs.slice(length - 1000, length).reverse();
     }
 
     async shutdown(): Promise<void> {
