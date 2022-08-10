@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Redirect, Render } from '@nestjs/common';
-import { AppService } from './app.service';
+import { AppService, TLogs } from './app.service';
 
-type TRenderData = {
+type TNavData = {
     isStatusPage?: true;
     isLogsPage?: true;
     isAddTaskPage?: true;
@@ -15,19 +15,22 @@ export class AppController {
     @Get('/')
     @Post('/')
     @Render('status')
-    async getStatusPage(): Promise<TRenderData> {
+    async getStatusPage(): Promise<TNavData> {
         return { isStatusPage: true };
     }
 
     @Get('/logs')
     @Render('logs')
-    async getLogsPage(): Promise<TRenderData> {
-        return { isLogsPage: true };
+    async getLogsPage(): Promise<TNavData & { logs: TLogs }> {
+        return {
+            isLogsPage: true,
+            logs: await this.appService.getLogs(),
+        };
     }
 
     @Get('/add-task')
     @Render('add-task')
-    async getAddTaskPage(): Promise<TRenderData> {
+    async getAddTaskPage(): Promise<TNavData> {
         return { isAddTaskPage: true };
     }
 
@@ -39,7 +42,7 @@ export class AppController {
 
     @Get('/shutdown')
     @Render('shutdown')
-    async getAddTask(): Promise<TRenderData> {
+    async getAddTask(): Promise<TNavData> {
         return { isShutdownPage: true };
     }
 
