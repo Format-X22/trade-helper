@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as moment from 'moment';
+import { AddTaskDto } from './app.dto';
 
 export type TLogs = Array<{
     isInfo?: true;
@@ -43,6 +44,10 @@ export class AppService {
         const length = this.logs.length;
 
         return this.logs.slice(length - 1000, length).reverse();
+    }
+
+    async addTask(config: AddTaskDto): Promise<void> {
+        // TODO -
     }
 
     async shutdown(): Promise<void> {

@@ -1,0 +1,118 @@
+<div class='container mt-3'>
+    <div class='row'>
+        <div class='col-md-6 offset-md-3'>
+            <form method='post' action='/add-task'>
+                <div class='input-group'>
+                    <span class='input-group-text'>Stock</span>
+                    <select name='stock' class='form-select'>
+                        <option>BITMEX</option>
+                        <option>DERIBIT</option>
+                    </select>
+                </div>
+                <div class='card mt-3'>
+                    <div class='card-body'>
+                        <h5 class='card-title'>Long</h5>
+                        <div class='input-group'>
+                            <span class='input-group-text add-task-label'>Fib 0</span>
+                            <input name='longFib0' class='form-control' type='number' step='0.01' inputmode='decimal' />
+                        </div>
+                        <div class='input-group mt-2'>
+                            <span class='input-group-text add-task-label'>Fib 1</span>
+                            <input name='longFib1' class='form-control' type='number' step='0.01' inputmode='decimal' />
+                        </div>
+                        <div class='input-group mt-2'>
+                            <span class='input-group-text add-task-label'>Enter level</span>
+                            <select name='longEnterLevel' class='form-select'>
+                                <option>Blue 0.62</option>
+                                <option>Purple 0.85</option>
+                            </select>
+                        </div>
+                        <div class='input-group mt-2'>
+                            <span class='input-group-text add-task-label'>Cancel price</span>
+                            <input
+                                name='longCancelPrice'
+                                class='form-control'
+                                type='number'
+                                step='0.01'
+                                inputmode='decimal'
+                            />
+                        </div>
+                        <div class='input-group mt-2'>
+                            <span class='input-group-text add-task-label'>Cancel time</span>
+                            <input name='longCancelTime' class='form-control' type='datetime-local' />
+                        </div>
+                        <div class='input-group mt-2'>
+                            <span class='input-group-text add-task-label'>Fund amount</span>
+                            <input
+                                name='longFundAmount'
+                                class='form-control'
+                                type='number'
+                                step='0.01'
+                                inputmode='decimal'
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class='card mt-3'>
+                    <div class='card-body'>
+                        <h5 class='card-title'>Short</h5>
+                        <div class='input-group'>
+                            <span class='input-group-text add-task-label'>Fib 0</span>
+                            <input
+                                name='shortFib0'
+                                class='form-control'
+                                type='number'
+                                step='0.01'
+                                inputmode='decimal'
+                            />
+                        </div>
+                        <div class='input-group mt-2'>
+                            <span class='input-group-text add-task-label'>Fib 1</span>
+                            <input
+                                name='shortFib1'
+                                class='form-control'
+                                type='number'
+                                step='0.01'
+                                inputmode='decimal'
+                            />
+                        </div>
+                        <div class='input-group mt-2'>
+                            <span class='input-group-text add-task-label'>Enter level</span>
+                            <select name='shortEnterLevel' class='form-select'>
+                                <option>Blue 0.62</option>
+                                <option>Purple 0.85</option>
+                            </select>
+                        </div>
+                        <div class='input-group mt-2'>
+                            <span class='input-group-text add-task-label'>Cancel price</span>
+                            <input
+                                name='shortCancelPrice'
+                                class='form-control'
+                                type='number'
+                                step='0.01'
+                                inputmode='decimal'
+                            />
+                        </div>
+                        <div class='input-group mt-2'>
+                            <span class='input-group-text add-task-label'>Cancel time</span>
+                            <input name='shortCancelTime' class='form-control' type='datetime-local' />
+                        </div>
+                        <div class='input-group mt-2'>
+                            <span class='input-group-text add-task-label'>Fund amount</span>
+                            <input
+                                name='shortFundAmount'
+                                class='form-control'
+                                type='number'
+                                step='0.01'
+                                inputmode='decimal'
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class='text-center'>
+                    <button type='submit' class='btn btn-primary btn-lg mt-3'>Add task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

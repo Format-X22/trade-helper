@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Redirect, Render } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, Redirect, Render } from '@nestjs/common';
 import { AppService, TLogs } from './app.service';
+import { AddTaskDto } from './app.dto';
 
 type TNavData = {
     isStatusPage?: true;
@@ -36,8 +37,28 @@ export class AppController {
 
     @Post('/add-task')
     @Redirect('/')
-    async addTask(): Promise<void> {
-        return;
+    async addTask(@Body() body: AddTaskDto): Promise<void> {
+        if (body.longFib0) {
+            if (!body.longFib1 || !body.longEnterLevel || !body.longFundAmount) {
+                throw new BadRequestException('Invalid Long params');
+            }
+
+            if (body.longFib0 < body.longFib1) {
+                throw new BadRequestException('Long fib 0 < Long fib 1');
+            }
+        }
+
+        if (body.shortFib0) {
+            if (!body.shortFib1 || !body.shortEnterLevel || !body.shortFundAmount) {
+                throw new BadRequestException('Invalid Short params');
+            }
+
+            if (body.shortFib0 > body.shortFib1) {
+                throw new BadRequestException('Short fib 0 > Short fib 1');
+            }
+        }
+
+        await this.appService.addTask(body);
     }
 
     @Get('/shutdown')
