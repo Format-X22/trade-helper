@@ -1,14 +1,5 @@
 import { IsEnum, IsNumber, IsOptional, Min } from 'class-validator';
-
-export enum EStock {
-    BITMEX = 'BITMEX',
-    DERIBIT = 'DERIBIT',
-}
-
-export enum ELevel {
-    BLUE = 'Blue 0.62',
-    PURPLE = 'Purple 0.85',
-}
+import { ELevel, EStock } from './app.model';
 
 export class AddTaskDto {
     @IsEnum(EStock)
