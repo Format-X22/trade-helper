@@ -1,5 +1,6 @@
 import { IsEnum, IsNumber, IsOptional, Min } from 'class-validator';
-import { ELevel, EStock } from './app.model';
+import { EStock } from './app.enum';
+import { Task } from './app.model';
 
 export class AddTaskDto {
     @IsEnum(EStock)
@@ -14,10 +15,6 @@ export class AddTaskDto {
     @IsNumber()
     @Min(0)
     longFib1: number;
-
-    @IsOptional()
-    @IsEnum(ELevel)
-    longEnterLevel: ELevel;
 
     @IsOptional()
     @IsNumber()
@@ -43,10 +40,6 @@ export class AddTaskDto {
     shortFib1: number;
 
     @IsOptional()
-    @IsEnum(ELevel)
-    shortEnterLevel: ELevel;
-
-    @IsOptional()
     @IsNumber()
     @Min(0)
     shortCancelPrice: number;
@@ -59,3 +52,12 @@ export class AddTaskDto {
     @Min(0)
     shortFundAmount: number;
 }
+
+export type TExplainTask = {
+    id: Task['id'];
+    stock: Task['stock'];
+    long: Task['long'];
+    short: Task['short'];
+};
+
+export type TExplain = Array<TExplainTask>;

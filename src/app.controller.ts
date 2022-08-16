@@ -1,6 +1,6 @@
 import { BadRequestException, Body, Controller, Get, Post, Redirect, Render } from '@nestjs/common';
 import { AppService, TLogs } from './app.service';
-import { AddTaskDto } from './app.dto';
+import { AddTaskDto, TExplain } from './app.dto';
 
 type TNavData = {
     isStatusPage?: true;
@@ -16,8 +16,9 @@ export class AppController {
     @Get('/')
     @Post('/')
     @Render('status')
-    async getStatusPage(): Promise<TNavData> {
-        return { isStatusPage: true };
+    async getStatusPage(): Promise<TNavData & { explain: TExplain }> {
+        // TODO -
+        return { isStatusPage: true, explain: null };
     }
 
     @Get('/logs')
@@ -38,9 +39,13 @@ export class AppController {
     @Post('/add-task')
     @Redirect('/')
     async addTask(@Body() body: AddTaskDto): Promise<void> {
+        if (!body.longFib0 && !body.shortFib0) {
+            throw new BadRequestException('Invalid config');
+        }
+
         if (body.longFib0) {
-            if (!body.longFib1 || !body.longEnterLevel || !body.longFundAmount) {
-                throw new BadRequestException('Invalid Long params');
+            if (!body.longFib1 || !body.longFundAmount) {
+                throw new BadRequestException('Invalid Long config');
             }
 
             if (body.longFib0 < body.longFib1) {
@@ -49,8 +54,8 @@ export class AppController {
         }
 
         if (body.shortFib0) {
-            if (!body.shortFib1 || !body.shortEnterLevel || !body.shortFundAmount) {
-                throw new BadRequestException('Invalid Short params');
+            if (!body.shortFib1 || !body.shortFundAmount) {
+                throw new BadRequestException('Invalid Short config');
             }
 
             if (body.shortFib0 > body.shortFib1) {
