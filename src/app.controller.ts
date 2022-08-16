@@ -17,8 +17,7 @@ export class AppController {
     @Post('/')
     @Render('status')
     async getStatusPage(): Promise<TNavData & { explain: TExplain }> {
-        // TODO -
-        return { isStatusPage: true, explain: null };
+        return { isStatusPage: true, explain: await this.appService.getExplain() };
     }
 
     @Get('/logs')
@@ -44,7 +43,7 @@ export class AppController {
         }
 
         if (body.longFib0) {
-            if (!body.longFib1 || !body.longFundAmount) {
+            if (!body.longFib1) {
                 throw new BadRequestException('Invalid Long config');
             }
 
@@ -54,7 +53,7 @@ export class AppController {
         }
 
         if (body.shortFib0) {
-            if (!body.shortFib1 || !body.shortFundAmount) {
+            if (!body.shortFib1) {
                 throw new BadRequestException('Invalid Short config');
             }
 

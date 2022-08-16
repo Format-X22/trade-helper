@@ -9,6 +9,7 @@ export enum ESide {
 }
 
 export enum EMainState {
+    INITIAL = 'INITIAL',
     WAIT = 'WAIT',
     IN_POSITION = 'IN_POSITION',
     TAKE = 'TAKE',
@@ -19,4 +20,6 @@ export enum EMainState {
 }
 
 // TODO -
-export enum EInnerState {}
+export enum EInnerState {
+    INITIAL = 'INITIAL',
+}

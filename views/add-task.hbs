@@ -3,11 +3,21 @@
         <div class='col-md-6 offset-md-3'>
             <form method='post' action='/add-task'>
                 <div class='input-group'>
-                    <span class='input-group-text'>Stock</span>
+                    <span class='input-group-text add-task-label-top'>Stock</span>
                     <select name='stock' class='form-select'>
                         <option>BITMEX</option>
                         <option>DERIBIT</option>
                     </select>
+                </div>
+                <div class='input-group mt-2'>
+                    <span class='input-group-text add-task-label-top'>Fund amount</span>
+                    <input
+                      name='fundAmount'
+                      class='form-control'
+                      type='number'
+                      step='0.01'
+                      inputmode='decimal'
+                    />
                 </div>
                 <div class='card mt-3'>
                     <div class='card-body'>
@@ -33,16 +43,6 @@
                         <div class='input-group mt-2'>
                             <span class='input-group-text add-task-label'>Cancel time</span>
                             <input name='longCancelTime' class='form-control' type='datetime-local' />
-                        </div>
-                        <div class='input-group mt-2'>
-                            <span class='input-group-text add-task-label'>Fund amount</span>
-                            <input
-                                name='longFundAmount'
-                                class='form-control'
-                                type='number'
-                                step='0.01'
-                                inputmode='decimal'
-                            />
                         </div>
                     </div>
                 </div>
@@ -82,16 +82,6 @@
                         <div class='input-group mt-2'>
                             <span class='input-group-text add-task-label'>Cancel time</span>
                             <input name='shortCancelTime' class='form-control' type='datetime-local' />
-                        </div>
-                        <div class='input-group mt-2'>
-                            <span class='input-group-text add-task-label'>Fund amount</span>
-                            <input
-                                name='shortFundAmount'
-                                class='form-control'
-                                type='number'
-                                step='0.01'
-                                inputmode='decimal'
-                            />
                         </div>
                     </div>
                 </div>

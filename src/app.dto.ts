@@ -6,6 +6,10 @@ export class AddTaskDto {
     @IsEnum(EStock)
     stock: EStock;
 
+    @IsNumber()
+    @Min(0)
+    fundAmount: number;
+
     @IsOptional()
     @IsNumber()
     @Min(0)
@@ -27,11 +31,6 @@ export class AddTaskDto {
     @IsOptional()
     @IsNumber()
     @Min(0)
-    longFundAmount: number;
-
-    @IsOptional()
-    @IsNumber()
-    @Min(0)
     shortFib0: number;
 
     @IsOptional()
@@ -46,16 +45,12 @@ export class AddTaskDto {
 
     @IsOptional()
     shortCancelTime: Date;
-
-    @IsOptional()
-    @IsNumber()
-    @Min(0)
-    shortFundAmount: number;
 }
 
 export type TExplainTask = {
     id: Task['id'];
     stock: Task['stock'];
+    fundAmount: Task['fundAmount'];
     long: Task['long'];
     short: Task['short'];
 };

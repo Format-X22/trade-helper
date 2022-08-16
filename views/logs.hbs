@@ -1,14 +1,14 @@
-<div class='container'>
-    <table class='table'>
+<div class='container mt-3'>
+    <table class='table table-bordered'>
         <thead>
-            <tr>
+            <tr class='bg-white'>
                 <th>Date</th>
                 <th style='width: 80%'>Message</th>
             </tr>
         </thead>
         <tbody>
             {{#each logs}}
-                {{#if isInfo}}<tr>{{/if}}
+                {{#if isInfo}}<tr class='bg-white'>{{/if}}
                 {{#if isWarn}}<tr class='table-warning'>{{/if}}
                 {{#if isError}}<tr class='table-danger'>{{/if}}
                     <td>

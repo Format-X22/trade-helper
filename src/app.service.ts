@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as moment from 'moment';
-import { AddTaskDto } from './app.dto';
+import { AddTaskDto, TExplain } from './app.dto';
+import { Task } from './app.model';
 
 export type TLogs = Array<{
     isInfo?: true;
@@ -39,6 +40,7 @@ export class AppService {
         { isWarn: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
         { isError: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
     ];
+    private tasks: Array<Task> = [];
 
     async getLogs(): Promise<TLogs> {
         const length = this.logs.length;
@@ -47,10 +49,14 @@ export class AppService {
     }
 
     async addTask(config: AddTaskDto): Promise<void> {
-        // TODO -
+        this.tasks.push(new Task(config));
     }
 
     async shutdown(): Promise<void> {
         // TODO -
+    }
+
+    async getExplain(): Promise<TExplain> {
+        return this.tasks.map((i) => i.explain());
     }
 }
