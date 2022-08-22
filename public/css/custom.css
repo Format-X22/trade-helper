@@ -5,3 +5,8 @@
 .add-task-label-top {
     width: 138px;
 }
+
+.to-center {
+    margin-top: 35vh;
+    text-align: center;
+}
