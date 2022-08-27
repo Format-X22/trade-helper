@@ -1,0 +1,7 @@
+extends ../layout
+
+block body
+    div.container.text-center(style='margin-top: 35vh')
+        h1.mt-3 Really shutdown?
+        form.mt-3(method='post' action='/shutdown')
+            button.btn.btn-danger.btn-lg(type='submit') SHUTDOWN

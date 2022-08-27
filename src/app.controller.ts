@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Post, Redirect, Render } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, Query, Redirect, Render } from '@nestjs/common';
 import { AppService, TLogs } from './app.service';
 import { AddTaskDto, TExplain } from './app.dto';
 
@@ -15,13 +15,13 @@ export class AppController {
 
     @Get('/')
     @Post('/')
-    @Render('status')
+    @Render('pages/status')
     async getStatusPage(): Promise<TNavData & { explain: TExplain }> {
         return { isStatusPage: true, explain: await this.appService.getExplain() };
     }
 
     @Get('/logs')
-    @Render('logs')
+    @Render('pages/logs')
     async getLogsPage(): Promise<TNavData & { logs: TLogs }> {
         return {
             isLogsPage: true,
@@ -30,7 +30,7 @@ export class AppController {
     }
 
     @Get('/add-task')
-    @Render('add-task')
+    @Render('pages/add-task')
     async getAddTaskPage(): Promise<TNavData> {
         return { isAddTaskPage: true };
     }
@@ -65,8 +65,31 @@ export class AppController {
         await this.appService.addTask(body);
     }
 
+    @Get('/cancel-task')
+    @Render('pages/cancel-task')
+    async promptCancelTask(
+        @Query('id') id: string,
+        @Query('long') long: string,
+        @Query('short') short: string,
+    ): Promise<{ id: string; long: string; short: string }> {
+        return { id, long, short };
+    }
+
+    @Post('/cancel-task')
+    @Redirect('/')
+    async cancelTask(
+        @Query('id') id: string,
+        @Query('long') long: string,
+        @Query('short') short: string,
+    ): Promise<void> {
+        const isLong = long === 'true';
+        const isShort = short === 'true';
+
+        await this.appService.cancelTask(Number(id), isLong, isShort);
+    }
+
     @Get('/shutdown')
-    @Render('shutdown')
+    @Render('pages/shutdown')
     async getAddTask(): Promise<TNavData> {
         return { isShutdownPage: true };
     }

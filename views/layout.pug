@@ -1,0 +1,31 @@
+doctype html
+html(lang='en')
+    head
+        title Main
+        meta(charset='UTF-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1')
+        link(href='./css/bootstrap.min.css' rel='stylesheet')
+        link(href='./css/custom.css' rel='stylesheet')
+
+    body.text-bg-light
+        nav.navbar.navbar-expand-lg.navbar-dark.bg-primary.sticky-top
+            div.container
+                a.navbar-brand(href='/') Control
+                button.navbar-toggler(
+                    type='button'
+                    data-bs-toggle='collapse'
+                    data-bs-target='#navbar'
+                )
+                    span.navbar-toggler-icon
+                div#navbar.collapse.navbar-collapse
+                    ul.navbar-nav.me-auto.mb-2.mb-lg-0
+                        li.nav-item
+                            a.nav-link(class=isStatusPage ? 'active' : '' href='/') Status
+                        li.nav-item
+                            a.nav-link(class=isLogsPage ? 'active' : '' href='/logs') Logs
+                        li.nav-item
+                            a.nav-link(class=isAddTaskPage ? 'active' : '' href='/add-task') Add task
+                        li.nav-item
+                            a.nav-link(class=isShutdownPage ? 'active' : '' href='/shutdown') Shutdown
+        block body
+        script(src='./js/bootstrap.bundle.js')

@@ -1,0 +1,31 @@
+extends ../layout
+
+include ../components/all
+
+block body
+    .container.mt-3
+        .row
+            .col-md-6.offset-md-3
+                form(method='post', action='/add-task')
+                    .input-group
+                        span.input-group-text.add-task-label-top Stock
+                        select.form-select(name='stock')
+                            option BITMEX
+                            option DERIBIT
+                    +amountInput.mt-2
+                    .card.mt-3
+                        .card-body
+                            h5.card-title Long
+                            +decimalInput('Fib 0', 'longFib0')
+                            +decimalInput('Fib 1', 'longFib1').mt-2
+                            +decimalInput('Cancel price', 'longCancelPrice').mt-2
+                            +timeInput('Cancel time', 'longCancelTime').mt-2
+                    .card.mt-3
+                        .card-body
+                            h5.card-title Short
+                            +decimalInput('Fib 0', 'shortFib0')
+                            +decimalInput('Fib 1', 'shortFib1').mt-2
+                            +decimalInput('Cancel price', 'shortCancelPrice').mt-2
+                            +timeInput('Cancel time', 'shortCancelTime').mt-2
+                    .text-center
+                        button.btn.btn-primary.btn-lg.mt-3(type='submit') Add task

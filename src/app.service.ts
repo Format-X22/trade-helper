@@ -3,10 +3,14 @@ import * as moment from 'moment';
 import { AddTaskDto, TExplain } from './app.dto';
 import { Task } from './app.model';
 
+enum ELogType {
+    INFO = 'INFO',
+    WARN = 'WARN',
+    ERROR = 'ERROR',
+}
+
 export type TLogs = Array<{
-    isInfo?: true;
-    isWarn?: true;
-    isError?: true;
+    type: ELogType;
     date: string;
     message: string;
 }>;
@@ -15,30 +19,30 @@ export type TLogs = Array<{
 export class AppService {
     private logs: TLogs = [
         // TODO Demo
-        { isInfo: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
-        { isWarn: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
-        { isError: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
-        { isInfo: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
-        { isWarn: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
-        { isError: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
-        { isInfo: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
-        { isWarn: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
-        { isError: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
-        { isInfo: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
-        { isWarn: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
-        { isError: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
-        { isInfo: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
-        { isWarn: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
-        { isError: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
-        { isInfo: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
-        { isWarn: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
-        { isError: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
-        { isInfo: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
-        { isWarn: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
-        { isError: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
-        { isInfo: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
-        { isWarn: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
-        { isError: true, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
+        { type: ELogType.INFO, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
+        { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
+        { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
+        { type: ELogType.INFO, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
+        { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
+        { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
+        { type: ELogType.INFO, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
+        { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
+        { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
+        { type: ELogType.INFO, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
+        { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
+        { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
+        { type: ELogType.INFO, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
+        { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
+        { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
+        { type: ELogType.INFO, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
+        { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
+        { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
+        { type: ELogType.INFO, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
+        { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
+        { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
+        { type: ELogType.INFO, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
+        { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
+        { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
     ];
     private tasks: Array<Task> = [];
 
@@ -50,6 +54,10 @@ export class AppService {
 
     async addTask(config: AddTaskDto): Promise<void> {
         this.tasks.push(new Task(config));
+    }
+
+    async cancelTask(id: number, isLong: boolean, isShort: boolean): Promise<void> {
+        // TODO -
     }
 
     async shutdown(): Promise<void> {

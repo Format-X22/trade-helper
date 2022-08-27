@@ -1,0 +1,10 @@
+extends ../layout
+
+block body
+    .container.text-center(style='margin-top: 35vh')
+        - var isLong = long === 'true'
+        - var isShort = short === 'true'
+        - var description = isLong && isShort ? 'FULL' : isLong ? 'LONG' : 'SHORT';
+        h1.mt-3 Really cancel task #{ id } (#{ description })?
+        form.mt-3(method='post', action=`/cancel-task?id=${id}&long=${long}&short=${short}`)
+            button.btn.btn-danger.btn-lg(type='submit') DO IT NOW
