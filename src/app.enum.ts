@@ -8,6 +8,11 @@ export enum ESide {
     SHORT = 'SHORT',
 }
 
+export enum EType {
+    REVERSE = 'REVERSE',
+    TREND = 'TREND',
+}
+
 export enum EMainState {
     INITIAL = 'INITIAL',
     WAIT = 'WAIT',

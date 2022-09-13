@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import * as moment from 'moment';
 import { AddTaskDto, TExplain } from './app.dto';
 import { Task } from './app.model';
@@ -46,7 +46,7 @@ export class AppService {
         { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
         { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
     ];
-    private tasks: Array<Task> = [];
+    private tasks: Map<Task['id'], Task> = new Map();
 
     async auth(res: Response, token: string): Promise<void> {
         if (token !== TOKEN) {
@@ -66,11 +66,31 @@ export class AppService {
     }
 
     async addTask(config: AddTaskDto): Promise<void> {
-        this.tasks.push(new Task(config));
+        const task = new Task(config);
+
+        this.tasks.set(task.id, task);
     }
 
-    async cancelTask(id: number, isLong: boolean, isShort: boolean): Promise<void> {
+    async cancelTask(id: number, cancelLong: boolean, cancelShort: boolean): Promise<void> {
+        const task = this.tasks.get(id);
+
+        if (!task) {
+            throw new NotFoundException();
+        }
+
         // TODO -
+
+        if (cancelLong) {
+            task.clearLong();
+        }
+
+        if (cancelShort) {
+            task.clearShort();
+        }
+
+        if (!task.hasLong() && !task.hasShort()) {
+            this.tasks.delete(id);
+        }
     }
 
     async shutdown(): Promise<void> {
@@ -78,6 +98,6 @@ export class AppService {
     }
 
     async getExplain(): Promise<TExplain> {
-        return this.tasks.map((i) => i.explain());
+        return Array.from(this.tasks.values()).map((i) => i.explain());
     }
 }

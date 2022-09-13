@@ -3,7 +3,7 @@ extends ../layout
 include ../components/all
 
 mixin taskSideInfo(title, id, data, isLong)
-    h5.card-title= title
+    h5.card-title= `${title} - ${data.type}`
         - var params = `?id=${id}&long=${isLong}&short=${!isLong}`;
         +cancel-x-button.float-end(onclick=`window.location.href='/cancel-task${params}'`)
     h6.card-subtitle.text-muted #{ data.state.main } - #{ data.state.inner }

@@ -1,5 +1,5 @@
 import { AddTaskDto, TExplainTask } from './app.dto';
-import { EInnerState, EMainState, ESide, EStock } from './app.enum';
+import { EInnerState, EMainState, ESide, EStock, EType } from './app.enum';
 import * as moment from 'moment';
 
 type TStateObject = {
@@ -42,9 +42,11 @@ type TStateObject = {
         main: EMainState;
         inner: EInnerState;
     };
+    type: EType;
 };
 
 type TOrdersConfig = {
+    type: EType;
     cancelPrice: number;
     cancelTime: Date;
 };
@@ -52,11 +54,12 @@ type TOrdersConfig = {
 export class Task {
     private static lastId: number = 0;
 
-    private readonly id: number;
+    readonly id: number;
+
     private readonly stock: EStock;
     private readonly fundAmount: number;
-    private readonly long: TStateObject = null;
-    private readonly short: TStateObject = null;
+    private long: TStateObject = null;
+    private short: TStateObject = null;
 
     constructor(config: AddTaskDto) {
         this.id = ++Task.lastId;
@@ -68,6 +71,7 @@ export class Task {
 
             this.calcFib(this.long, config.longFib0, config.longFib1);
             this.calcOrders(this.long, {
+                type: config.longType,
                 cancelPrice: config.longCancelPrice,
                 cancelTime: config.longCancelTime,
             });
@@ -80,6 +84,7 @@ export class Task {
 
             this.calcFib(this.short, config.shortFib0, config.shortFib1);
             this.calcOrders(this.short, {
+                type: config.shortType,
                 cancelPrice: config.shortCancelPrice,
                 cancelTime: config.shortCancelTime,
             });
@@ -92,26 +97,46 @@ export class Task {
         // TODO -
     }
 
+    hasLong(): boolean {
+        return Boolean(this.long);
+    }
+
+    hasShort(): boolean {
+        return Boolean(this.short);
+    }
+
+    clearLong(): void {
+        this.long = null;
+    }
+
+    clearShort(): void {
+        this.short = null;
+    }
+
     explain(): TExplainTask {
-        return {
+        const result: TExplainTask = {
             id: this.id,
             stock: this.stock,
             fundAmount: this.fundAmount,
-            long: {
-                ...this.long,
-                cancel: {
-                    price: this.long.cancel.price,
-                    time: this.formatDate(this.long.cancel.time as Date),
-                },
-            },
-            short: {
-                ...this.short,
-                cancel: {
-                    price: this.short.cancel.price,
-                    time: this.formatDate(this.long.cancel.time as Date),
-                },
-            },
         };
+
+        if (this.long) {
+            result.long = this.long;
+
+            if (this.long.cancel.time) {
+                result.long.cancel.time = this.formatDate(this.long.cancel.time as Date);
+            }
+        }
+
+        if (this.short) {
+            result.short = this.short;
+
+            if (this.short.cancel.time) {
+                result.short.cancel.time = this.formatDate(this.short.cancel.time as Date);
+            }
+        }
+
+        return result;
     }
 
     private calcFib(state: TStateObject, fib0: number, fib1: number): void {
@@ -122,6 +147,7 @@ export class Task {
     }
 
     private calcOrders(state: TStateObject, ordersConfig: TOrdersConfig): void {
+        state.type = ordersConfig.type;
         state.cancel.price = ordersConfig.cancelPrice;
         state.cancel.time = ordersConfig.cancelTime;
 
@@ -169,6 +195,7 @@ export class Task {
                 main: EMainState.INITIAL,
                 inner: EInnerState.INITIAL,
             },
+            type: null,
         };
     }
 

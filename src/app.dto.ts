@@ -1,5 +1,5 @@
 import { IsEnum, IsNumber, IsOptional, IsString, MaxLength, Min, MinLength } from 'class-validator';
-import { EStock } from './app.enum';
+import { EStock, EType } from './app.enum';
 import { Task } from './app.model';
 
 export class AddTaskDto {
@@ -9,6 +9,10 @@ export class AddTaskDto {
     @IsNumber()
     @Min(0)
     fundAmount: number;
+
+    @IsOptional()
+    @IsEnum(EType)
+    longType: EType;
 
     @IsOptional()
     @IsNumber()
@@ -27,6 +31,10 @@ export class AddTaskDto {
 
     @IsOptional()
     longCancelTime: Date;
+
+    @IsOptional()
+    @IsEnum(EType)
+    shortType: EType;
 
     @IsOptional()
     @IsNumber()
@@ -51,8 +59,8 @@ export type TExplainTask = {
     id: Task['id'];
     stock: Task['stock'];
     fundAmount: Task['fundAmount'];
-    long: Task['long'];
-    short: Task['short'];
+    long?: Task['long'];
+    short?: Task['short'];
 };
 
 export type TExplain = Array<TExplainTask>;

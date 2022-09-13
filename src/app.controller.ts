@@ -15,6 +15,7 @@ import { AppService, TLogs } from './app.service';
 import { AddTaskDto, AuthDto, TExplain } from './app.dto';
 import { AuthGuard } from './app.guard';
 import { Request, Response } from 'express';
+import * as moment from 'moment';
 
 type TNavData = {
     isAuthPage?: true;
@@ -93,6 +94,14 @@ export class AppController {
             }
         }
 
+        if (!moment(body.longCancelTime).isValid()) {
+            body.longCancelTime = null;
+        }
+
+        if (!moment(body.shortCancelTime).isValid()) {
+            body.shortCancelTime = null;
+        }
+
         await this.appService.addTask(body);
     }
 
@@ -115,10 +124,10 @@ export class AppController {
         @Query('long') long: string,
         @Query('short') short: string,
     ): Promise<void> {
-        const isLong = long === 'true';
-        const isShort = short === 'true';
+        const cancelLong = long === 'true';
+        const cancelShort = short === 'true';
 
-        await this.appService.cancelTask(Number(id), isLong, isShort);
+        await this.appService.cancelTask(Number(id), cancelLong, cancelShort);
     }
 
     @UseGuards(AuthGuard)

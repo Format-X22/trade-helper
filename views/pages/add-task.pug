@@ -16,14 +16,24 @@ block body
                     .card.mt-3
                         .card-body
                             h5.card-title Long
-                            +decimalInput('Fib 0', 'longFib0')
+                            .input-group
+                                span.input-group-text.add-task-label Type
+                                select.form-select(name='longType')
+                                    option REVERSE
+                                    option TREND
+                            +decimalInput('Fib 0', 'longFib0').mt-2
                             +decimalInput('Fib 1', 'longFib1').mt-2
                             +decimalInput('Cancel price', 'longCancelPrice').mt-2
                             +timeInput('Cancel time', 'longCancelTime').mt-2
                     .card.mt-3
                         .card-body
                             h5.card-title Short
-                            +decimalInput('Fib 0', 'shortFib0')
+                            .input-group
+                                span.input-group-text.add-task-label Stock
+                                select.form-select(name='shortType')
+                                    option REVERSE
+                                    option TREND
+                            +decimalInput('Fib 0', 'shortFib0').mt-2
                             +decimalInput('Fib 1', 'shortFib1').mt-2
                             +decimalInput('Cancel price', 'shortCancelPrice').mt-2
                             +timeInput('Cancel time', 'shortCancelTime').mt-2
