@@ -8,6 +8,11 @@ mixin decimalInput(title, name)
         span.input-group-text.add-task-label= title
         input.form-control(name=name, type='number', step='0.01', inputmode='decimal')
 
+mixin passwordInput(title, name)
+    .input-group&attributes(attributes)
+        span.input-group-text.add-task-label= title
+        input.form-control(name=name, type='password')
+
 mixin timeInput(title, name)
     .input-group&attributes(attributes)
         span.input-group-text.add-task-label= title

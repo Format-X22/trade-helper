@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import * as moment from 'moment';
 import { AddTaskDto, TExplain } from './app.dto';
 import { Task } from './app.model';
+import { TOKEN } from './app.const';
+import { Response } from 'express';
 
 enum ELogType {
     INFO = 'INFO',
@@ -45,6 +47,17 @@ export class AppService {
         { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
     ];
     private tasks: Array<Task> = [];
+
+    async auth(res: Response, token: string): Promise<void> {
+        if (token !== TOKEN) {
+            throw new ForbiddenException();
+        }
+
+        res.cookie('token', token, {
+            httpOnly: true,
+            maxAge: moment.duration(7, 'days').as('ms'),
+        });
+    }
 
     async getLogs(): Promise<TLogs> {
         const length = this.logs.length;

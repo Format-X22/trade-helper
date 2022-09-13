@@ -1,0 +1,15 @@
+extends ../layout
+
+include ../components/all
+
+block body
+    .container.text-center(style='margin-top: 35vh')
+        .row
+            .col-md-6.offset-md-3
+                form(method='post', action='/auth')
+                    .card.mt-3
+                        .card-body
+                            h5.card-title Authorization required
+                            +passwordInput('Token', 'token').mt-3
+                            .text-center
+                                button.btn.btn-primary.mt-3.w-100(type='submit') Send

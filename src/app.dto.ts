@@ -1,4 +1,4 @@
-import { IsEnum, IsNumber, IsOptional, Min } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString, MaxLength, Min, MinLength } from 'class-validator';
 import { EStock } from './app.enum';
 import { Task } from './app.model';
 
@@ -56,3 +56,10 @@ export type TExplainTask = {
 };
 
 export type TExplain = Array<TExplainTask>;
+
+export class AuthDto {
+    @IsString()
+    @MinLength(8)
+    @MaxLength(64)
+    token: string;
+}
