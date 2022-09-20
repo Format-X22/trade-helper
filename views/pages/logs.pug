@@ -9,7 +9,7 @@ block body
                     th(style='width: 80%') Message
             tbody
                 each log in logs
-                    - var rowClass = { INFO: 'bg-white', WARN: 'table-warning', ERROR: 'table-danger' };
+                    - var rowClass = { LOG: 'bg-white', WARN: 'table-warning', ERROR: 'table-danger' };
                     tr(class=rowClass[log.type])
                         td= log.date
                         td= log.message

@@ -11,11 +11,14 @@ import {
     Res,
     UseGuards,
 } from '@nestjs/common';
-import { AppService, TLogs } from './app.service';
-import { AddTaskDto, AuthDto, TExplain } from './app.dto';
+import { AppService } from './app.service';
+import { AddTaskDto, AuthDto } from './app.dto';
 import { AuthGuard } from './app.guard';
 import { Request, Response } from 'express';
 import * as moment from 'moment';
+import { TLogs } from './logger/logger.service';
+import { ESide } from './task/task.enum';
+import { TaskModel } from './task/task.model';
 
 type TNavData = {
     isAuthPage?: true;
@@ -45,7 +48,7 @@ export class AppController {
     @Get('/')
     @Post('/')
     @Render('pages/status')
-    async getStatusPage(): Promise<TNavData & { explain: TExplain }> {
+    async getStatusPage(): Promise<TNavData & { explain: Array<TaskModel> }> {
         return { isStatusPage: true, explain: await this.appService.getExplain() };
     }
 
@@ -70,36 +73,20 @@ export class AppController {
     @Post('/add-task')
     @Redirect('/')
     async addTask(@Body() body: AddTaskDto): Promise<void> {
-        if (!body.longFib0 && !body.shortFib0) {
-            throw new BadRequestException('Invalid config');
-        }
-
-        if (body.longFib0) {
-            if (!body.longFib1) {
-                throw new BadRequestException('Invalid Long config');
-            }
-
-            if (body.longFib0 < body.longFib1) {
+        if (body.side === ESide.LONG) {
+            if (body.fib0 < body.fib1) {
                 throw new BadRequestException('Long fib 0 < Long fib 1');
             }
         }
 
-        if (body.shortFib0) {
-            if (!body.shortFib1) {
-                throw new BadRequestException('Invalid Short config');
-            }
-
-            if (body.shortFib0 > body.shortFib1) {
+        if (body.side === ESide.SHORT) {
+            if (body.fib0 > body.fib1) {
                 throw new BadRequestException('Short fib 0 > Short fib 1');
             }
         }
 
-        if (!moment(body.longCancelTime).isValid()) {
-            body.longCancelTime = null;
-        }
-
-        if (!moment(body.shortCancelTime).isValid()) {
-            body.shortCancelTime = null;
+        if (!moment(body.cancelTime).isValid()) {
+            body.cancelTime = null;
         }
 
         await this.appService.addTask(body);
@@ -119,15 +106,8 @@ export class AppController {
     @UseGuards(AuthGuard)
     @Post('/cancel-task')
     @Redirect('/')
-    async cancelTask(
-        @Query('id') id: string,
-        @Query('long') long: string,
-        @Query('short') short: string,
-    ): Promise<void> {
-        const cancelLong = long === 'true';
-        const cancelShort = short === 'true';
-
-        await this.appService.cancelTask(Number(id), cancelLong, cancelShort);
+    async cancelTask(@Query('id') id: string): Promise<void> {
+        await this.appService.cancelTask(Number(id));
     }
 
     @UseGuards(AuthGuard)

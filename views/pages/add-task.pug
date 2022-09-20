@@ -7,35 +7,29 @@ block body
         .row
             .col-md-6.offset-md-3
                 form(method='post', action='/add-task')
-                    .input-group
-                        span.input-group-text.add-task-label-top Stock
-                        select.form-select(name='stock')
-                            option BITMEX
-                            option DERIBIT
-                    +amountInput.mt-2
                     .card.mt-3
                         .card-body
-                            h5.card-title Long
-                            .input-group
-                                span.input-group-text.add-task-label Type
-                                select.form-select(name='longType')
-                                    option REVERSE
-                                    option TREND
-                            +decimalInput('Fib 0', 'longFib0').mt-2
-                            +decimalInput('Fib 1', 'longFib1').mt-2
-                            +decimalInput('Cancel price', 'longCancelPrice').mt-2
-                            +timeInput('Cancel time', 'longCancelTime').mt-2
-                    .card.mt-3
-                        .card-body
-                            h5.card-title Short
+                            h5.card-title New Task
                             .input-group
                                 span.input-group-text.add-task-label Stock
-                                select.form-select(name='shortType')
+                                select.form-select(name='stock')
+                                    option BINANCE
+                                    option BITMEX
+                                    option DERIBIT
+                            .input-group.mt-2
+                                span.input-group-text.add-task-label Type
+                                select.form-select(name='type')
                                     option REVERSE
                                     option TREND
-                            +decimalInput('Fib 0', 'shortFib0').mt-2
-                            +decimalInput('Fib 1', 'shortFib1').mt-2
-                            +decimalInput('Cancel price', 'shortCancelPrice').mt-2
-                            +timeInput('Cancel time', 'shortCancelTime').mt-2
+                            .input-group.mt-2
+                                span.input-group-text.add-task-label Side
+                                select.form-select(name='side')
+                                    option LONG
+                                    option SHORT        
+                            +decimalInput('Fib 0', 'fib0').mt-2
+                            +decimalInput('Fib 1', 'fib1').mt-2
+                            +decimalInput('Amount', 'amount').mt-2
+                            +decimalInput('Cancel price', 'cancelPrice').mt-2
+                            +timeInput('Cancel time', 'cancelTime').mt-2
                     .text-center
                         button.btn.btn-primary.btn-lg.mt-3(type='submit') Add task

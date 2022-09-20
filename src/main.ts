@@ -4,6 +4,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
+import { LoggerModel } from './logger/logger.model';
+import { TaskModel } from './task/task.model';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -20,6 +22,11 @@ async function bootstrap() {
         }),
     );
     app.use(cookieParser());
+
+    const syncOptions = { alter: { drop: false } };
+
+    await LoggerModel.sync(syncOptions);
+    await TaskModel.sync(syncOptions);
 
     await app.listen(3000);
 }

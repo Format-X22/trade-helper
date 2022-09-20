@@ -1,6 +1,6 @@
 import { IsEnum, IsNumber, IsOptional, IsString, MaxLength, Min, MinLength } from 'class-validator';
-import { EStock, EType } from './app.enum';
-import { Task } from './app.model';
+import { ESide, EStock, EType } from './task/task.enum';
+import { TaskModel } from './task/task.model';
 
 export class AddTaskDto {
     @IsEnum(EStock)
@@ -8,62 +8,30 @@ export class AddTaskDto {
 
     @IsNumber()
     @Min(0)
-    fundAmount: number;
+    amount: number;
 
-    @IsOptional()
     @IsEnum(EType)
-    longType: EType;
+    type: EType;
+
+    @IsEnum(ESide)
+    side: ESide;
+
+    @IsNumber()
+    @Min(0)
+    fib0: number;
+
+    @IsNumber()
+    @Min(0)
+    fib1: number;
 
     @IsOptional()
     @IsNumber()
     @Min(0)
-    longFib0: number;
+    cancelPrice: number;
 
     @IsOptional()
-    @IsNumber()
-    @Min(0)
-    longFib1: number;
-
-    @IsOptional()
-    @IsNumber()
-    @Min(0)
-    longCancelPrice: number;
-
-    @IsOptional()
-    longCancelTime: Date;
-
-    @IsOptional()
-    @IsEnum(EType)
-    shortType: EType;
-
-    @IsOptional()
-    @IsNumber()
-    @Min(0)
-    shortFib0: number;
-
-    @IsOptional()
-    @IsNumber()
-    @Min(0)
-    shortFib1: number;
-
-    @IsOptional()
-    @IsNumber()
-    @Min(0)
-    shortCancelPrice: number;
-
-    @IsOptional()
-    shortCancelTime: Date;
+    cancelTime: Date;
 }
-
-export type TExplainTask = {
-    id: Task['id'];
-    stock: Task['stock'];
-    fundAmount: Task['fundAmount'];
-    long?: Task['long'];
-    short?: Task['short'];
-};
-
-export type TExplain = Array<TExplainTask>;
 
 export class AuthDto {
     @IsString()

@@ -2,81 +2,66 @@ extends ../layout
 
 include ../components/all
 
-mixin taskSideInfo(title, id, data, isLong)
-    h5.card-title= `${title} - ${data.type}`
-        - var params = `?id=${id}&long=${isLong}&short=${!isLong}`;
-        +cancel-x-button.float-end(onclick=`window.location.href='/cancel-task${params}'`)
-    h6.card-subtitle.text-muted #{ data.state.main } - #{ data.state.inner }
-    table.table.mt-3.text-center
-        - var fib = data.fib;
-        thead
-            tr
-                th 0.00
-                th 0.35
-                th 0.62
-                th 0.85
-                th 1.00
-                th 1.43
-                th 1.80
-        tbody
-            tr
-                td #{ fib.f0_00 }
-                td #{ fib.f0_35 }
-                td #{ fib.f0_62 }
-                td #{ fib.f0_85 }
-                td #{ fib.f1_00 }
-                td #{ fib.f1_43 }
-                td #{ fib.f1_80 }
-    table.table.mt-3.text-center
-        thead
-            tr
-                th Type
-                th Price
-                th Amount
-                th Is open
-        tbody
-            - var order = data.order;
-            tr
-                td Enter
-                td #{ order.enter.price }
-                td #{ order.enter.amount }
-                +order-marker(order.enter)
-            tr
-                td Take
-                td #{ order.take.price }
-                td #{ order.take.amount }
-                +order-marker(order.take)
-            tr
-                td Stop
-                td #{ order.stop.price }
-                td #{ order.stop.amount }
-                +order-marker(order.stop)
-            tr
-                td Safe
-                td #{ order.safe.price }
-                td #{ order.safe.amount }
-                +order-marker(order.safe)
-    if data.cancel.price
-        p.card-text.text-muted.mb-1 Cancel price - #{ data.cancel.price }
-    if data.cancel.time
-        p.card-text.text-muted Cancel time - #{ data.cancel.time }
-
 block body
     .container.mt-3
         .row
             .col-md-8.offset-md-2
                 each task in explain
                     .card.mb-5
-                        .card-header ID #{ task.id } - #{ task.stock } - #{ task.fundAmount } USD
-                            - var params = `?id=${task.id}&long=true&short=true`;
-                                +cancel-x-button.float-end(onclick=`window.location.href='/cancel-task${params}'`)
+                        .card-header(style='') ID #{ task.id } - #{ task.stock } - #{ task.amount } USD
+                            - var params = `?id=${task.id}`;
+                                +cancel-x-button.float-end.pt-1(onclick=`window.location.href='/cancel-task${params}'`)
                         .card-body
-                            if task.long
-                                +taskSideInfo('Long', task.id, task.long, true)
-                            - var delimiterRequired = task.long && task.short;
-                            if delimiterRequired
-                                hr.mt-3
-                            if task.short
-                                +taskSideInfo('Short', task.id, task.short, false)
+                            h5.card-title= `${task.type} - ${task.side}`
+                            h6.card-subtitle.text-muted #{ task.state || 'UNKNOWN' }
+                            table.table.mt-3.text-center
+                                thead
+                                    tr
+                                        th 0.00
+                                        th 0.35
+                                        th 0.62
+                                        th 0.85
+                                        th 1.00
+                                        th 1.43
+                                        th 1.80
+                                tbody
+                                    tr
+                                        td -
+                                        td -
+                                        td -
+                                        td -
+                                        td -
+                                        td -
+                                        td -
+                            table.table.mt-3.text-center
+                                thead
+                                    tr
+                                        th Type
+                                        th Price
+                                        th Amount
+                                        th Is open
+                                tbody
+                                    tr
+                                        td Enter
+                                        td #{ task.orderEnterPrice }
+                                        td #{ task.orderEnterAmount }
+                                        +order-marker(task.orderEnterIsOpen)
+                                    tr
+                                        td Take
+                                        td #{ task.orderTakePrice }
+                                        td #{ task.orderTakeAmount }
+                                        +order-marker(task.orderTakeIsOpen)
+                                    tr
+                                        td Stop
+                                        td #{ task.orderStopPrice }
+                                        td #{ task.orderStopAmount }
+                                        +order-marker(task.orderStopIsOpen)
+                                    tr
+                                        td Safe
+                                        td #{ task.orderSafePrice }
+                                        td #{ task.orderSafeAmount }
+                                        +order-marker(task.orderSafeIsOpen)
+                            if task.cancelTime
+                                p.card-text.text-muted Cancel time - #{ task.cancelTime }
                 else
-                    p.h2.text-center(style='margin-top: 35vh') No any active tasks
+                    p.h2.text-center(style='margin-top: 35vh') No any tasks

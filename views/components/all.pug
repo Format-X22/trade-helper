@@ -46,9 +46,9 @@ mixin circle-icon
             <circle cx='8' cy='8' r='8'></circle>
         </svg>
 
-mixin order-marker(target)
+mixin order-marker(isOpen)
     td
-        if target.isOpen
+        if isOpen
             +circle-icon.text-success
         else
             +circle-icon.text-muted

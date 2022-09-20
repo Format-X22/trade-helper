@@ -1,52 +1,19 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import * as moment from 'moment';
-import { AddTaskDto, TExplain } from './app.dto';
-import { Task } from './app.model';
+import { AddTaskDto } from './app.dto';
 import { TOKEN } from './app.const';
 import { Response } from 'express';
-
-enum ELogType {
-    INFO = 'INFO',
-    WARN = 'WARN',
-    ERROR = 'ERROR',
-}
-
-export type TLogs = Array<{
-    type: ELogType;
-    date: string;
-    message: string;
-}>;
+import { LoggerService, TLogs } from './logger/logger.service';
+import { TaskService } from './task/task.service';
+import { TaskModel } from './task/task.model';
 
 @Injectable()
-export class AppService {
-    private logs: TLogs = [
-        // TODO Demo
-        { type: ELogType.INFO, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
-        { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
-        { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
-        { type: ELogType.INFO, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
-        { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
-        { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
-        { type: ELogType.INFO, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
-        { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
-        { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
-        { type: ELogType.INFO, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
-        { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
-        { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
-        { type: ELogType.INFO, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
-        { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
-        { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
-        { type: ELogType.INFO, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
-        { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
-        { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
-        { type: ELogType.INFO, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
-        { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
-        { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
-        { type: ELogType.INFO, date: moment().format('DD MMM HH:mm:ss'), message: 'Info test log' },
-        { type: ELogType.WARN, date: moment().format('DD MMM HH:mm:ss'), message: 'Warn test log' },
-        { type: ELogType.ERROR, date: moment().format('DD MMM HH:mm:ss'), message: 'Error test log' },
-    ];
-    private tasks: Map<Task['id'], Task> = new Map();
+export class AppService implements OnApplicationBootstrap {
+    constructor(private logger: LoggerService, private taskService: TaskService) {}
+
+    async onApplicationBootstrap(): Promise<void> {
+        await this.logger.log('Started!');
+    }
 
     async auth(res: Response, token: string): Promise<void> {
         if (token !== TOKEN) {
@@ -60,44 +27,26 @@ export class AppService {
     }
 
     async getLogs(): Promise<TLogs> {
-        const length = this.logs.length;
-
-        return this.logs.slice(length - 1000, length).reverse();
+        return this.logger.getLogs();
     }
 
     async addTask(config: AddTaskDto): Promise<void> {
-        const task = new Task(config);
-
-        this.tasks.set(task.id, task);
+        await this.taskService.addTask(config);
     }
 
-    async cancelTask(id: number, cancelLong: boolean, cancelShort: boolean): Promise<void> {
-        const task = this.tasks.get(id);
-
-        if (!task) {
-            throw new NotFoundException();
-        }
-
-        // TODO -
-
-        if (cancelLong) {
-            task.clearLong();
-        }
-
-        if (cancelShort) {
-            task.clearShort();
-        }
-
-        if (!task.hasLong() && !task.hasShort()) {
-            this.tasks.delete(id);
-        }
+    async cancelTask(id: number): Promise<void> {
+        await this.taskService.cancel(id);
     }
 
     async shutdown(): Promise<void> {
-        // TODO -
+        await this.logger.log('Shutdown...');
+        await this.taskService.shutdown();
+        await this.logger.log('Shutdown done!');
+        
+        process.exit(0);
     }
 
-    async getExplain(): Promise<TExplain> {
-        return Array.from(this.tasks.values()).map((i) => i.explain());
+    async getExplain(): Promise<Array<TaskModel>> {
+        return this.taskService.getExplain();
     }
 }
